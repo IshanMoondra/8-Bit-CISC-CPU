@@ -1,0 +1,4 @@
+INFO: [VRFC 10-2263] Analyzing Verilog file "F:/Vivado/Projects/basys3_CPU_8bit/basys3_CPU_8bit.srcs/sources_1/new/pipeline_v1.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module pipeline_v1
+INFO: [VRFC 10-2263] Analyzing Verilog file "F:/Vivado/Projects/basys3_CPU_8bit/basys3_CPU_8bit.srcs/sim_1/new/pipeline_v1_testbench.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module pipeline_v1_testbench
