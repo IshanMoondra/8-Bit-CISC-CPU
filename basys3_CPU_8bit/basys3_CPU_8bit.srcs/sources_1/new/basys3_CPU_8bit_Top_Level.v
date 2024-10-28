@@ -15,7 +15,7 @@
 // 
 // Revision:
 // Revision 0.01 - File Created
-// Additional Comments: sw aaray is input, led array is output, LED register is input, SWITCH
+// Additional Comments: sw array is input, led array is output, LED register is input, SWITCH
 //                      register is output. Could use a single Buttons register instead of btnU, 
 //                      and the like. Debouncing of the Buttons and Switches should be 
 //                      looked at in the next revision.
