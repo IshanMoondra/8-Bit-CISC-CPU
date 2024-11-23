@@ -1,26 +1,23 @@
 `timescale 1ns/1ns
 
-module alu (
-  input  wire clk,
-  input  wire enable,
-  input  wire [7:0]op1,
-  input  wire [7:0]op2,
-  input  wire [7:0]opi,
-  input  wire [3:0]sel,
-  output reg [2:0]flag,
-  output reg  [7:0]res);
-
-//reg [2:0]flag;
-initial
-begin
-res <= 0;
-flag <= 0;
-end
+module alu 
+	(
+		input  wire clk,
+		input  wire rst_n,
+		input  wire enable,
+		input  wire [7:0]op1,
+		input  wire [7:0]op2,
+		input  wire [7:0]opi,
+		input  wire [3:0]sel,
+		output reg [2:0]flag,
+		output reg  [7:0]res
+	);
    
-always @(negedge clk)
+always @(posedge clk, negedege rst_n)
 begin
-  // put clocked assignments here
-  if (enable)
+  if (!rst_n)
+	{res, flag} <= 10'h000;
+  else if (enable)
   	begin	
 	  	case (sel)
 		  0 : {flag[2], res} <= op1 + op2;
@@ -41,18 +38,10 @@ begin
 		  15 : res <= ~opi;
 		endcase
 	  end
-  
-  if (res == 0)
-  begin
-  flag[0] <= 1;
-  end
-  else
-  begin
-  flag[0] <= 0;
-  end
-  
+
+  //Zero Flag
+  flag[0] <= ~(|res);
+  //Parity Flag
   flag[1] <= ^res;
-  
 end
-   
 endmodule // alu
