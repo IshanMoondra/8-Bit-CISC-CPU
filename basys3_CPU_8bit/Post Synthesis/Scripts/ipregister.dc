@@ -1,0 +1,74 @@
+###Script for Design Vision CLI tool.
+###For 8 Bit CISC IP Register
+
+###Reading in the Verilog Files
+read_file -format verilog { IPregister_2.v }
+
+###Set the top of the heirarchy.
+set current_design ipreg
+
+##Constraining the Design
+
+###Creating the clock
+###Trying out 500 MHz   Barely Misses timing 
+###Same issue at 400 MHz
+###Works at 300 MHz
+###Going Faster
+create_clock -name "clk" -period 2.667 {clk}
+set_dont_touch_network [find port clk]
+
+###Creating the Primary Inputs
+set prim_inputs [remove_from_collection [all_inputs] [find port clk]]
+
+###Setting Input Delays
+set_input_delay -clock clk 0.4 $prim_inputs
+
+###Setting the Drive Strength of Inputs
+
+set_driving_cell -lib_cell NAND2X2_LVT -library saed32lvt_tt0p85v25c $prim_inputs
+
+
+###No Reset Pins in the Design
+###Setting the RST_N signal to be very strongly driven, the value is in M Ohm
+###set_drive 0.0001 rst_n 
+
+###Setting the Output Delays
+set_output_delay -clock clk 0.4 [all_outputs]
+
+###Set Capacitive Load 0.10 pF on all Output Pins (in pF)
+set_load 0.100 [all_outputs]
+
+###Setting the Wireload Model Constraint
+set_wire_load_model -name 16000 -library saed32lvt_tt0p85v25c
+
+###Setting Max Transition Times for the design
+set_max_transition 0.15 [current_design]
+
+###Compiling the Design
+compile -map_effort high
+#compile -map_effort ultra
+#compile -map_effort medium
+
+###Setting up some clock skew and fixes for clock skew
+#set_clock_uncertainty 0.15 clk
+#set_fix_hold clk
+
+###Flatten the Heirarchy
+ungroup -all -flatten
+
+###2nd Compile
+compile -map_effort high
+#compile -map_effort ultra
+#compile -map_effort medium
+
+##Writing the Area, Min & Max Timing Reports to files
+report_power > ipreg_power.rpt
+report_area > ipreg_area.rpt
+report_timing -delay max > ipreg_timing_max.rpt
+report_timing -delay min > ipreg_timing_min.rpt
+
+###Write out the netlist
+write -format verilog ipreg -output ipreg.vg
+
+###Write out the Synopsys Design Constraints format script (.sdc file)
+write_sdc ipreg.sdc

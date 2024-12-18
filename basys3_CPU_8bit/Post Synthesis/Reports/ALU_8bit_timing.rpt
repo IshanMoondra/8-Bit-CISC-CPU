@@ -1,0 +1,105 @@
+ 
+****************************************
+Report : timing
+        -path full
+        -delay max
+        -max_paths 1
+Design : alu
+Version: V-2023.12-SP5
+Date   : Wed Dec 11 19:19:44 2024
+****************************************
+
+Operating Conditions: tt0p85v25c   Library: saed32lvt_tt0p85v25c
+Wire Load Model Mode: enclosed
+
+  Startpoint: op1[0] (input port clocked by clk)
+  Endpoint: res_reg[7] (rising edge-triggered flip-flop clocked by clk)
+  Path Group: clk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  alu                16000                 saed32lvt_tt0p85v25c
+
+  Point                                    Incr       Path
+  -----------------------------------------------------------
+  clock clk (rise edge)                    0.00       0.00
+  clock network delay (ideal)              0.00       0.00
+  input external delay                     0.40       0.40 f
+  op1[0] (in)                              0.01       0.41 f
+  U711/Y (OR2X1_LVT)                       0.05       0.46 f
+  U758/Y (AO21X1_LVT)                      0.05       0.51 f
+  U1256/Y (AO22X1_LVT)                     0.04       0.55 f
+  U907/Y (NAND2X0_LVT)                     0.03       0.58 r
+  U929/Y (AO22X1_LVT)                      0.05       0.63 r
+  U795/Y (OA21X1_LVT)                      0.05       0.68 r
+  U921/Y (OA21X1_LVT)                      0.05       0.73 r
+  U947/Y (XNOR2X1_LVT)                     0.08       0.81 r
+  U869/Y (NAND2X0_LVT)                     0.03       0.84 f
+  U871/Y (AND3X1_LVT)                      0.05       0.89 f
+  U716/Y (MUX21X1_LVT)                     0.05       0.94 f
+  U788/Y (NAND3X0_LVT)                     0.03       0.98 r
+  res_reg[7]/D (DFFARX1_LVT)               0.01       0.99 r
+  data arrival time                                   0.99
+
+  clock clk (rise edge)                    1.00       1.00
+  clock network delay (ideal)              0.00       1.00
+  res_reg[7]/CLK (DFFARX1_LVT)             0.00       1.00 r
+  library setup time                      -0.03       0.97
+  data required time                                  0.97
+  -----------------------------------------------------------
+  data required time                                  0.97
+  data arrival time                                  -0.99
+  -----------------------------------------------------------
+  slack (VIOLATED)                                   -0.02
+
+
+1
+ 
+****************************************
+Report : timing
+        -path full
+        -delay min
+        -max_paths 1
+Design : alu
+Version: V-2023.12-SP5
+Date   : Wed Dec 11 19:19:44 2024
+****************************************
+
+Operating Conditions: tt0p85v25c   Library: saed32lvt_tt0p85v25c
+Wire Load Model Mode: enclosed
+
+  Startpoint: flag_reg[0]
+              (rising edge-triggered flip-flop clocked by clk)
+  Endpoint: flag_reg[0]
+            (rising edge-triggered flip-flop clocked by clk)
+  Path Group: clk
+  Path Type: min
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  alu                16000                 saed32lvt_tt0p85v25c
+
+  Point                                    Incr       Path
+  -----------------------------------------------------------
+  clock clk (rise edge)                    0.00       0.00
+  clock network delay (ideal)              0.00       0.00
+  flag_reg[0]/CLK (DFFARX1_LVT)            0.00       0.00 r
+  flag_reg[0]/QN (DFFARX1_LVT)             0.07       0.07 r
+  U696/Y (OAI22X1_LVT)                     0.05       0.12 f
+  flag_reg[0]/D (DFFARX1_LVT)              0.01       0.13 f
+  data arrival time                                   0.13
+
+  clock clk (rise edge)                    0.00       0.00
+  clock network delay (ideal)              0.00       0.00
+  flag_reg[0]/CLK (DFFARX1_LVT)            0.00       0.00 r
+  library hold time                       -0.01      -0.01
+  data required time                                 -0.01
+  -----------------------------------------------------------
+  data required time                                 -0.01
+  data arrival time                                  -0.13
+  -----------------------------------------------------------
+  slack (MET)                                         0.14
+
+
+1

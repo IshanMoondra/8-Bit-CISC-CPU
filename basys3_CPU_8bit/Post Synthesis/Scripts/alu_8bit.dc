@@ -1,0 +1,78 @@
+###Script for Design Vision CLI tool.
+###For 8 Bit CISC ALU
+
+###Reading in the Verilog Files
+read_file -format verilog { ./Designs/alu_8bit.v }
+
+###Set the top of the heirarchy.
+set current_design alu
+
+##Constraining the Design
+
+###Creating the clock
+###Trying out 500 MHz   Barely Misses timing 
+###Same issue at 400 MHz
+###Works at 300 MHz
+###Going Faster
+create_clock -name "clk" -period 1 {clk}
+set_dont_touch_network [find port clk]
+
+###Creating the Primary Inputs
+set prim_inputs [remove_from_collection [all_inputs] [find port clk]]
+
+###Setting Input Delays
+set_input_delay -clock clk 0.4 $prim_inputs
+
+###Setting the Drive Strength of Inputs
+
+set_driving_cell -lib_cell NAND2X2_LVT -library saed32lvt_tt0p85v25c $prim_inputs
+
+###No Reset Pins in the Design
+###Setting the RST_N signal to be very strongly driven, the value is in M Ohm
+###set_drive 0.0001 rst_n 
+
+###Setting the Output Delays
+set_output_delay -clock clk 0.4 [all_outputs]
+
+###Set Capacitive Load 0.10 pF on all Output Pins (in pF)
+set_load 0.100 [all_outputs]
+
+###Setting the Wireload Model Constraint
+set_wire_load_model -name 16000 -library saed32lvt_tt0p85v25c
+
+###Setting Max Transition Times for the design
+set_max_transition 0.15 [current_design]
+
+### Some area Constraint
+set_max_area 1800
+
+###Compiling the Design
+
+compile -map_effort high
+compile -map_effort high -incremental_mapping
+
+###Setting up some clock skew and fixes for clock skew
+#set_clock_uncertainty 0.15 clk
+#set_fix_hold clk
+
+###Flatten the Heirarchy
+ungroup -all -flatten
+
+###2nd Compile
+compile -map_effort high
+compile -map_effort high -incremental_mapping
+
+compile -map_effort high -incremental_mapping
+compile -map_effort high -incremental_mapping
+
+##Writing the Area, Min & Max Timing Reports to files
+report_power > ./Reports/ALU_8bit_power.rpt
+report_area > ./Reports/ALU_8bit_area.rpt
+report_timing -delay max > ./Reports/ALU_8bit_timing.rpt
+report_timing -delay min >> ./Reports/ALU_8bit_timing.rpt
+
+###Write out the netlist
+write -format verilog alu -output ./Netlists/ALU_8bit.vg
+
+###Write out the Synopsys Design Constraints format script (.sdc file)
+write_sdc ./SDC_Files/ALU_8bit.sdc

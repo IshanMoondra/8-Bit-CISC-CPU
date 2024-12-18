@@ -1,0 +1,30 @@
+ 
+****************************************
+Report : area
+Design : ipreg
+Version: V-2023.12-SP5
+Date   : Thu Nov  7 23:47:15 2024
+****************************************
+
+Library(s) Used:
+
+    saed32lvt_tt0p85v25c (File: /cae/apps/data/saed32_edk-2022/lib/stdcell_lvt/db_nldm/saed32lvt_tt0p85v25c.db)
+
+Number of ports:                           19
+Number of nets:                            47
+Number of cells:                           28
+Number of combinational cells:             20
+Number of sequential cells:                 8
+Number of macros/black boxes:               0
+Number of buf/inv:                          2
+Number of references:                       9
+
+Combinational area:                 57.944834
+Buf/Inv area:                        2.541440
+Noncombinational area:              52.861954
+Macro/Black Box area:                0.000000
+Net Interconnect area:              19.446524
+
+Total cell area:                   110.806787
+Total area:                        130.253311
+1

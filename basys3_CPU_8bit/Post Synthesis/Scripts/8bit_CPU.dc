@@ -1,0 +1,103 @@
+###Script for Design Vision CLI tool.
+###For 8 Bit CISC CPU
+
+###Reading in the Verilog Files
+read_file -format sverilog  { ./Designs/uOP_code.sv }
+read_file -format verilog   {   ./Designs/register_stack.v\
+                                ./Designs/IPregister_2.v\
+                                ./Designs/alu_8bit.v\
+                                ./Designs/control_unit_2.v\
+                                ./Designs/CPU_8bit_top.v }
+link
+
+###Set the top of the heirarchy.
+set current_design CPU_8bit_top
+
+##Constraining the Design
+
+###Creating the clock
+###Works at 1172.3 MHz: 4.778k sq microns at 2.65 mW
+create_clock -name "clk" -period 0.853 {clk}
+
+###Most Area Efficient at 800 MHz: 3.1k sq microns at 1.67 mW.
+#create_clock -name "clk" -period 1.25 {clk}
+set_dont_touch_network [find port clk]
+
+###Creating the Primary Inputs
+set prim_inputs [remove_from_collection [all_inputs] [find port clk]]
+
+###Setting Input Delays
+set_input_delay -clock clk 0.4 $prim_inputs
+
+###Setting the Drive Strength of Inputs
+
+set_driving_cell -lib_cell NAND2X2_LVT -library saed32lvt_tt0p85v25c $prim_inputs
+
+
+###Setting the RST_N signal to be very strongly driven, the value is in M Ohm
+set_drive 0.0001 rst_n 
+
+###Setting the Output Delays
+set_output_delay -clock clk 0.4 [all_outputs]
+
+###Set Capacitive Load 0.10 pF on all Output Pins (in pF)
+set_load 0.100 [all_outputs]
+
+###Setting the Wireload Model Constraint
+set_wire_load_model -name 16000 -library saed32lvt_tt0p85v25c
+
+###Setting Max Transition Times for the design
+set_max_transition 0.15 [current_design]
+
+### Some Area Constraints
+
+set_max_area 4000
+
+###Compiling the Design
+compile -map_effort high
+compile -map_effort high -incremental_mapping
+
+compile -map_effort high -incremental_mapping
+compile -map_effort high -incremental_mapping
+
+###Setting up some clock skew and fixes for clock skew
+set_clock_uncertainty 0.15 clk
+set_fix_hold clk
+
+###Flatten the Heirarchy
+ungroup -all -flatten
+
+###2nd Compile
+
+compile -map_effort high
+compile -map_effort high -incremental_mapping
+
+compile -map_effort high -incremental_mapping
+compile -map_effort high -incremental_mapping
+
+compile -map_effort high -incremental_mapping
+compile -map_effort high -incremental_mapping
+
+compile -map_effort high -incremental_mapping
+compile -map_effort high -incremental_mapping
+
+compile -map_effort high -incremental_mapping
+compile -map_effort high -incremental_mapping
+
+compile -map_effort high -incremental_mapping
+compile -map_effort high -incremental_mapping
+
+compile -map_effort high -incremental_mapping
+compile -map_effort high -incremental_mapping
+
+##Writing the Area, Min & Max Timing Reports to files
+report_power > ./Reports/CPU_8bit_power.rpt
+report_area > ./Reports/CPU_8bit_area.rpt
+report_timing -delay max > ./Reports/CPU_8bit_timing.rpt
+report_timing -delay min >> ./Reports/CPU_8bit_timing.rpt
+
+###Write out the netlist
+write -format verilog CPU_8bit_top -output ./Netlists/CPU_8bit_32nm.vg
+
+###Write out the Synopsys Design Constraints format script (.sdc file)
+write_sdc ./SDC_Files/CPU_8bit_32nm.sdc

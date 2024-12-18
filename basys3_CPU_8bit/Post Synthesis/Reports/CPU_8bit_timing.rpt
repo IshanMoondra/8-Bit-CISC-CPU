@@ -1,0 +1,109 @@
+ 
+****************************************
+Report : timing
+        -path full
+        -delay max
+        -max_paths 1
+Design : CPU_8bit_top
+Version: V-2023.12-SP5
+Date   : Wed Dec 11 19:27:12 2024
+****************************************
+
+Operating Conditions: tt0p85v25c   Library: saed32lvt_tt0p85v25c
+Wire Load Model Mode: enclosed
+
+  Startpoint: iControl/state_reg[0]
+              (rising edge-triggered flip-flop clocked by clk)
+  Endpoint: iControl/ALU/res_reg[7]
+            (rising edge-triggered flip-flop clocked by clk)
+  Path Group: clk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  CPU_8bit_top       16000                 saed32lvt_tt0p85v25c
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock clk (rise edge)                                   0.00       0.00
+  clock network delay (ideal)                             0.00       0.00
+  iControl/state_reg[0]/CLK (DFFARX2_LVT)                 0.00       0.00 r
+  iControl/state_reg[0]/QN (DFFARX2_LVT)                  0.08       0.08 r
+  U1071/Y (INVX0_LVT)                                     0.04       0.11 f
+  U1072/Y (NAND2X0_LVT)                                   0.05       0.16 r
+  U995/Y (NAND2X0_LVT)                                    0.03       0.20 f
+  U1068/Y (AND2X1_LVT)                                    0.05       0.25 f
+  U1753/Y (OAI221X1_LVT)                                  0.07       0.32 r
+  U1439/Y (AO22X1_LVT)                                    0.05       0.37 r
+  U913/Y (AO21X1_LVT)                                     0.05       0.42 r
+  U963/Y (AO21X1_LVT)                                     0.05       0.47 r
+  U926/Y (XOR2X2_LVT)                                     0.07       0.54 f
+  U1045/Y (NAND2X0_LVT)                                   0.03       0.58 r
+  U1044/Y (AND3X1_LVT)                                    0.04       0.62 r
+  U1022/Y (NAND4X0_LVT)                                   0.04       0.66 f
+  iControl/ALU/res_reg[7]/D (DFFARX1_LVT)                 0.01       0.67 f
+  data arrival time                                                  0.67
+
+  clock clk (rise edge)                                   0.85       0.85
+  clock network delay (ideal)                             0.00       0.85
+  clock uncertainty                                      -0.15       0.70
+  iControl/ALU/res_reg[7]/CLK (DFFARX1_LVT)               0.00       0.70 r
+  library setup time                                     -0.03       0.67
+  data required time                                                 0.67
+  --------------------------------------------------------------------------
+  data required time                                                 0.67
+  data arrival time                                                 -0.67
+  --------------------------------------------------------------------------
+  slack (VIOLATED: increase significant digits)                      0.00
+
+
+1
+ 
+****************************************
+Report : timing
+        -path full
+        -delay min
+        -max_paths 1
+Design : CPU_8bit_top
+Version: V-2023.12-SP5
+Date   : Wed Dec 11 19:27:12 2024
+****************************************
+
+Operating Conditions: tt0p85v25c   Library: saed32lvt_tt0p85v25c
+Wire Load Model Mode: enclosed
+
+  Startpoint: iControl/REG/registers_reg[2][2]
+              (rising edge-triggered flip-flop clocked by clk)
+  Endpoint: iControl/REG/registers_reg[2][2]
+            (rising edge-triggered flip-flop clocked by clk)
+  Path Group: clk
+  Path Type: min
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  CPU_8bit_top       16000                 saed32lvt_tt0p85v25c
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock clk (rise edge)                                   0.00       0.00
+  clock network delay (ideal)                             0.00       0.00
+  iControl/REG/registers_reg[2][2]/CLK (DFFARX1_LVT)      0.00       0.00 r
+  iControl/REG/registers_reg[2][2]/Q (DFFARX1_LVT)        0.09       0.09 f
+  U1469/Y (AO22X1_LVT)                                    0.04       0.13 f
+  iControl/REG/registers_reg[2][2]/D (DFFARX1_LVT)        0.01       0.14 f
+  data arrival time                                                  0.14
+
+  clock clk (rise edge)                                   0.00       0.00
+  clock network delay (ideal)                             0.00       0.00
+  clock uncertainty                                       0.15       0.15
+  iControl/REG/registers_reg[2][2]/CLK (DFFARX1_LVT)      0.00       0.15 r
+  library hold time                                      -0.01       0.14
+  data required time                                                 0.14
+  --------------------------------------------------------------------------
+  data required time                                                 0.14
+  data arrival time                                                 -0.14
+  --------------------------------------------------------------------------
+  slack (MET)                                                        0.00
+
+
+1

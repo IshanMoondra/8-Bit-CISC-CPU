@@ -1,0 +1,30 @@
+ 
+****************************************
+Report : area
+Design : CPU_8bit_top
+Version: V-2023.12-SP5
+Date   : Wed Dec 11 19:27:12 2024
+****************************************
+
+Library(s) Used:
+
+    saed32lvt_tt0p85v25c (File: /cae/apps/data/saed32_edk-2022/lib/stdcell_lvt/db_nldm/saed32lvt_tt0p85v25c.db)
+
+Number of ports:                           41
+Number of nets:                          1313
+Number of cells:                         1198
+Number of combinational cells:           1073
+Number of sequential cells:               123
+Number of macros/black boxes:               0
+Number of buf/inv:                        246
+Number of references:                      65
+
+Combinational area:               2437.240974
+Buf/Inv area:                      418.575174
+Noncombinational area:             864.089617
+Macro/Black Box area:                0.000000
+Net Interconnect area:             766.602346
+
+Total cell area:                  3301.330591
+Total area:                       4067.932937
+1
