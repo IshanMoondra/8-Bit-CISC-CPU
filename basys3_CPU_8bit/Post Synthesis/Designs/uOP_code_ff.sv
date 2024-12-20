@@ -3,13 +3,16 @@ uOP_code.sv
 Design file for the micro op code table/collection for Synthesis.
 */
 
-module uOP_code
+module uOP_code_ff
     (
+        input wire clk,
+        input wire rst_n,
         input wire [7:0] instruction,
-		output logic [15:0] control_signals
+		output reg [7:0] ibuf,
+        output reg [15:0] control_signals
     );
 
-logic [15:0]opcodes[0:255];
+reg [15:0]opcodes[0:255];
 
  //Set of Instructions to load Registers with Immediate Data.
 	 assign opcodes[0] = 16'b011000000000XXXX;
@@ -164,6 +167,19 @@ logic [15:0]opcodes[0:255];
 	//Instruction for NOP.
 	assign opcodes[255] = 16'b0011000XXXXXXXXX;
 
-assign control_signals = opcodes[instruction];
+
+always_ff @(posedge clk, negedge rst_n)
+begin
+    if (!rst_n)
+		begin
+			control_signals <= 16'b0011000XXXXXXXXX;
+			ibuf <= 8'hFF;
+		end
+    else
+		begin
+			control_signals <= opcodes[instruction];
+			ibuf <= instruction;
+		end
+end
 
 endmodule

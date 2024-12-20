@@ -1,6 +1,7 @@
 /*
 CPU_8bit_top.v
 Top level module for 8 Bit CISC CPU, created for synthesis using Design Vision.
+Max speed is 194.X MHz, at clock period of 5.143 ns. Power is 93 mW. 
 */
 
 module CPU_8bit_top
@@ -22,11 +23,11 @@ module CPU_8bit_top
     );
 
 //Signals for the Micro OP Code Module
-wire [7:0] ibuf;
-wire [15:0] uop_code;
+//wire [7:0] ibuf;
+//wire [15:0] uop_code;
 
 //Instantiating all the modules
-
+/*
 //Micro OP Code Module
 uOP_code iUOP
     (
@@ -38,7 +39,7 @@ uOP_code iUOP
         .control_signals(uop_code),
         .ibuf(ibuf)
     );
-
+*/
 //CPU Control Unit (Instantiating everything else internally)
 control_unit iControl
     (
@@ -46,8 +47,9 @@ control_unit iControl
         .rst_n(rst_n),
         //.enable(enable),
 
-        .ibuf(ibuf),
-        .control_signals(uop_code),
+        //.ibuf(ibuf),
+        .ibuf(ram_dataout),
+        //.control_signals(uop_code),
 
         .flag(flag),
         .final(final),
