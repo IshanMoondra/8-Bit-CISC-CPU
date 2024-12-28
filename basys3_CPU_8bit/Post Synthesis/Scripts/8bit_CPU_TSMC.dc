@@ -18,24 +18,23 @@ set current_design CPU_8bit_top
 ###Creating the clock
 ### General Purpose Cell
 ### Max Speed: 1302.1 MHz: 1.858k sq microns at 1.20 mW
-#create_clock -name "clk" -period 0.768 {clk}
+create_clock -name "clk" -period 0.767 {clk}
 
 ### Most Area Efficient at 833 MHz: 1.536k sq microns at 0.73 mW.
 #create_clock -name "clk" -period 1.20 {clk}
-set_dont_touch_network [find port clk]
 
 ### High Performance Cell
 ### Max Speed: 1333.3 MHz: 2.433k sq microns at 1.57 mW
 
 ### Most Area Efficient at 909.1 MHz: 2.032k sq microns at 1.02 mW.
-#create_clock -name "clk" -period 1.10 {clk}\
+#create_clock -name "clk" -period 1.10 {clk}
 
 ### Changing Input, Output Delay Parameters:
 ### Max Speed: 1.612.9 MHz, 3.522k sq microns, 2.1 mW
-create_clock -name "clk" -period 0.62 {clk}
+#create_clock -name "clk" -period 0.62 {clk}
 
-### Area Efficient: 1.000 MHz, 2.169k sq microns, 1.18 mW
-create_clock -name "clk" -period 1.00 {clk}
+### Area Efficient: 1.000 GHz, 2.169k sq microns, 1.18 mW
+#create_clock -name "clk" -period 1.00 {clk}
 
 set_dont_touch_network [find port clk]
 
@@ -43,10 +42,10 @@ set_dont_touch_network [find port clk]
 set prim_inputs [remove_from_collection [all_inputs] [find port clk]]
 
 ###Setting Input Delays
-#set_input_delay -clock clk 0.4 $prim_inputs
+set_input_delay -clock clk 0.4 $prim_inputs
 
 ### Trying a new input delay parameter
-set_input_delay -clock clk 0.2 $prim_inputs
+#set_input_delay -clock clk 0.2 $prim_inputs
 
 ###Setting the Drive Strength of Inputs
 # General Purpose Cell
@@ -59,10 +58,10 @@ set_input_delay -clock clk 0.2 $prim_inputs
 set_drive 0.0001 rst_n 
 
 ###Setting the Output Delays
-#set_output_delay -clock clk 0.4 [all_outputs]
+set_output_delay -clock clk 0.4 [all_outputs]
 
 ### Setting new output delay parameter
-set_output_delay -clock clk 0.2 [all_outputs]
+#set_output_delay -clock clk 0.2 [all_outputs]
 
 ###Set Capacitive Load 0.10 pF on all Output Pins (in pF)
 set_load 0.100 [all_outputs]

@@ -1,0 +1,148 @@
+### Script for Design Vision CLI tool.
+### For 8 Bit CISC CPU
+### Using New Parameters to Target GHz+ Clock Frequency
+### New Parameters: 0.20 ns Input & Output Delays
+###                 0.08 ns Clock skew
+###                 0.05 ns Max Transition Time
+###                 Capacitive Loading stays same
+
+### Reading in the Verilog Files
+read_file -format sverilog  {   ./Designs/uOP_code.sv }
+read_file -format verilog   {   ./Designs/register_stack.v\
+                                ./Designs/IPregister_2.v\
+                                ./Designs/alu_8bit.v\
+                                ./Designs/control_unit_2.v\
+                                ./Designs/CPU_8bit_top.v }
+link
+
+### Set the top of the heirarchy.
+set current_design CPU_8bit_top
+
+## Constraining the Design
+
+### Creating the clock
+### Old Reference Results
+### Synopsys 32nm Standard Cell
+### Max Speed: Z.ZZZ GHz, C.CCCk sq microns at Y.YY mW
+# create_clock -name 'clk' -period X.XX {clk}
+### Area Efficient: Z.ZZZ GHz, C.CCCk sq microns at Y.YY mW
+# create_clock -name 'clk' -period X.XX {clk}
+### TSMC 40nm Standard Cell
+### General Purpose Cell
+### Max Speed: 1302.1 MHz: 1.858k sq microns at 1.20 mW
+create_clock -name "clk" -period 0.767 {clk}
+### Most Area Efficient at 833 MHz: 1.536k sq microns at 0.73 mW.
+#create_clock -name "clk" -period 1.20 {clk}
+### High Performance Cell
+### Max Speed: 1333.3 MHz: 2.433k sq microns at 1.57 mW
+### Most Area Efficient at 909.1 MHz: 2.032k sq microns at 1.02 mW.
+# create_clock -name "clk" -period 1.10 {clk}
+
+### Take Two with new parameters
+
+### Synopsys 32nm Standard Cell
+### Max Speed: , Area, Power
+# create_clock -name "clk" -period 1.10 {clk}
+### Area Efficient: , Area, Power
+# create_clock -name "clk" -period 1.10 {clk}
+
+### TSMC 40nm Standard Cell
+### General Purpose
+### Max Speed: 1486 MHz, 2960 sq microns, 1.16 mW
+# create_clock -name "clk" -period 0.673 {clk}
+### Area Efficient: 833.33 MHz, 1934 sq microns, 0.56 mW
+# create_clock -name "clk" -period 1.20 {clk}
+
+### High Performance
+### Max Speed: 1669 MHz, 4553 sq microns, 2.08 mW
+### Max Speed: 1715 MHz, 6324 sq microns, 2.52 mW
+# create_clock -name "clk" -period 0.583 {clk}
+ create_clock -name "clk" -period 0.599 {clk}
+### Area Efficient: 1000 MHz, 2410 sq microns, 0.92 mW 
+# create_clock -name "clk" -period 1.00 {clk}
+
+set_dont_touch_network [find port clk]
+
+###Creating the Primary Inputs
+set prim_inputs [remove_from_collection [all_inputs] [find port clk]]
+
+###Setting Input Delays
+set_input_delay -clock clk 0.2 $prim_inputs
+
+###Setting the RST_N signal to be very strongly driven, the value is in M Ohm
+set_drive 0.0001 rst_n 
+
+###Setting the Output Delays
+set_output_delay -clock clk 0.2 [all_outputs]
+
+###Set Capacitive Load 0.10 pF on all Output Pins (in pF)
+set_load 0.100 [all_outputs]
+
+###Setting Max Transition Times for the design
+set_max_transition 0.05 [current_design]
+
+###Setting the Drive Strength of Inputs
+# General Purpose Cell
+# set_driving_cell -lib_cell ND2D2BWP -library tcbn40lpbwptc $prim_inputs
+
+# High Performance Cell
+ set_driving_cell -lib_cell ND2D2BWP -library tcbn40lpbwp12ttc $prim_inputs
+
+###Setting the Wireload Model Constraint
+# General Purpose Cell
+# set_wire_load_model -name TSMC32K_Lowk_Conservative -library tcbn40lpbwptc
+
+# High Performance Cell
+ set_wire_load_model -name TSMC32K_Lowk_Conservative -library tcbn40lpbwp12ttc
+
+### Some Area Constraints
+#set_max_area 4000
+
+### Compiling the Design
+compile -map_effort high
+compile -map_effort high -incremental_mapping
+
+compile -map_effort high -incremental_mapping
+compile -map_effort high -incremental_mapping
+
+### Setting up some clock skew and fixes for clock skew
+set_clock_uncertainty 0.08 clk
+set_fix_hold clk
+
+###Flatten the Heirarchy
+ungroup -all -flatten
+
+###2nd Compile
+
+compile -map_effort high
+compile -map_effort high -incremental_mapping
+
+compile -map_effort high -incremental_mapping
+compile -map_effort high -incremental_mapping
+
+compile -map_effort high -incremental_mapping
+compile -map_effort high -incremental_mapping
+
+compile -map_effort high -incremental_mapping
+compile -map_effort high -incremental_mapping
+
+compile -map_effort high -incremental_mapping
+compile -map_effort high -incremental_mapping
+
+compile -map_effort high -incremental_mapping
+compile -map_effort high -incremental_mapping
+
+compile -map_effort high -incremental_mapping
+compile -map_effort high -incremental_mapping
+
+##Writing the Area, Min & Max Timing Reports to files
+report_power > ./Reports/CPU_8bit_power_v2.rpt
+report_area > ./Reports/CPU_8bit_area_v2.rpt
+report_timing -delay max > ./Reports/CPU_8bit_timing_v2.rpt
+report_timing -delay min >> ./Reports/CPU_8bit_timing_v2.rpt
+
+###Write out the netlist
+write -format verilog CPU_8bit_top -output ./Netlists/CPU_8bit_v2.vg
+
+###Write out the Synopsys Design Constraints format script (.sdc file)
+write_sdc ./SDC_Files/CPU_8bit_v2.sdc

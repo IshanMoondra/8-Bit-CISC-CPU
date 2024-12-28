@@ -8,22 +8,22 @@ Report : power
         -analysis_effort low
 Design : CPU_8bit_top
 Version: V-2023.12-SP5
-Date   : Fri Dec 20 18:26:00 2024
+Date   : Fri Dec 27 18:16:18 2024
 ****************************************
 
 
 Library(s) Used:
 
-    tcbn40lpbwptc (File: /cae/apps/data/tsmclibs-2013/digital/Front_End/timing_power_noise/NLDM/tcbn40lpbwp_120b/tcbn40lpbwptc.db)
+    tcbn40lpbwp12ttc (File: /cae/apps/data/tsmclibs-2013/digital/Front_End/timing_power_noise/NLDM/tcbn40lpbwp12t_110b/tcbn40lpbwp12ttc.db)
 
 
-Operating Conditions: NCCOM   Library: tcbn40lpbwptc
+Operating Conditions: NCCOM   Library: tcbn40lpbwp12ttc
 Wire Load Model Mode: segmented
 
 Design        Wire Load Model            Library
 ------------------------------------------------
 CPU_8bit_top           TSMC32K_Lowk_Conservative
-                                         tcbn40lpbwptc
+                                         tcbn40lpbwp12ttc
 
 
 Global Operating Voltage = 1.1  
@@ -40,12 +40,12 @@ Attributes
 i - Including register clock pin internal power
 
 
-  Cell Internal Power  = 909.1002 uW   (69%)
-  Net Switching Power  = 417.3768 uW   (31%)
+  Cell Internal Power  =   1.4618 mW   (70%)
+  Net Switching Power  = 616.2094 uW   (30%)
                          ---------
-Total Dynamic Power    =   1.3265 mW  (100%)
+Total Dynamic Power    =   2.0781 mW  (100%)
 
-Cell Leakage Power     = 391.1498 nW
+Cell Leakage Power     = 870.5739 nW
 
 
                  Internal         Switching           Leakage            Total
@@ -54,10 +54,10 @@ Power Group      Power            Power               Power              Power  
 io_pad             0.0000            0.0000            0.0000            0.0000  (   0.00%)
 memory             0.0000            0.0000            0.0000            0.0000  (   0.00%)
 black_box          0.0000            0.0000            0.0000            0.0000  (   0.00%)
-clock_network      0.5720            0.0000            0.0000            0.5720  (  43.11%)  i
-register       2.3067e-02        1.7456e-02           35.0159        4.0558e-02  (   3.06%)
+clock_network      0.8329            0.0000            0.0000            0.8329  (  40.06%)  i
+register       3.7282e-02        1.3289e-02           68.5170        5.0640e-02  (   2.44%)
 sequential         0.0000            0.0000            0.0000            0.0000  (   0.00%)
-combinational      0.3140            0.3999          356.1055            0.7143  (  53.83%)
+combinational      0.5917            0.6029          802.0569            1.1954  (  57.50%)
 --------------------------------------------------------------------------------------------------
-Total              0.9091 mW         0.4174 mW       391.1214 nW         1.3269 mW
+Total              1.4618 mW         0.6162 mW       870.5739 nW         2.0789 mW
 1

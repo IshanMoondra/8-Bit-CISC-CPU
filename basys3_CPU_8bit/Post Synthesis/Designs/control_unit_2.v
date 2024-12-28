@@ -37,8 +37,6 @@ wire [3:0]Asel;
 reg [1:0]state;
 reg [1:0]next_state;
 
-assign {states, EI, EA,Csel, read_enable, Ipopsel, Ropsel, Regsel, Asel} = control_signals;
-
 //Instantiate All Sub Modules.
 
 /*
@@ -51,6 +49,17 @@ ram RAM(
 .datain(rdataout1),
 .dataout(ram_dataout));
 */
+
+//Micro OP Code table moved to a new module.
+//New Micro OP Code Table available as a combinational blob.
+
+wire [15:0] control_signals;
+
+uOP_code iuOP
+	(
+		.instruction(ibuf),
+		.control_signals(control_signals)
+	);
 
 //Register_Stack:
 register_stack REG(
@@ -87,19 +96,10 @@ alu ALU(
 
 assign ram_write_data = rdataout1;
 
-//Micro OP Code table moved to a new module.
-//New Micro OP Code Table available as a combinational blob.
-
-wire [15:0] control_signals;
-
-uOP_code iuOP
-	(
-		.instruction(ibuf),
-		.control_signals(control_signals)
-	);
-
 //{status, EI, EA, Csel, Read, Ipopsel, [1:0]Ropsel, [2:0]Regsel, [3:0]Asel}
 //opcodes[0] = {1'b0, 1'b0, 1'b0, 2'd2, 3'b0, 4'bz};
+
+assign {states, EI, EA,Csel, read_enable, Ipopsel, Ropsel, Regsel, Asel} = control_signals;
 
 always @(posedge clk, negedge rst_n)
 begin
