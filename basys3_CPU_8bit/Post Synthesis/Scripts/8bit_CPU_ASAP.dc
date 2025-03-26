@@ -1,0 +1,115 @@
+### Script for Design Vision CLI tool.
+### For 8 Bit CISC CPU
+### For ASAP 7nm Standard Cell library
+
+###Reading in the Verilog Files
+read_file -format sverilog  {   ./Designs/uOP_code.sv }
+read_file -format verilog   {   ./Designs/register_stack.v\
+                                ./Designs/IPregister_2.v\
+                                ./Designs/alu_8bit.v\
+                                ./Designs/control_unit_2.v\
+                                ./Designs/CPU_8bit_top.v }
+link
+
+### Set the top of the heirarchy.
+set current_design CPU_8bit_top
+
+## Constraining the Design
+### Old Results:
+### TSMC Library: GP
+### Max Speed 1: 1302.1 MHz, 1.858k sq microns, 1.20 mW
+### Area Efficient: 833 Mhz, 1.536k sq microns, 0.73 mW
+### TSMC Library: HP
+### Max Speed 1: 1333.3 MHz, 2.433k sq microns, 1.57 mW
+### Max Speed 2: 1612.9 MHz, 3.522k sq microns, 2.10 mW
+### Area Efficient 1: 909.1 MHz, 2.032k sq microns, 1.02 mW
+### Area Efficient 2: 1000.0 MHz, 2.169k sq microns, 1.18 mW
+
+### Creating the clock
+### Max Speed: 3552 MHz, 110.60 sq microns, 0.444 mW
+ create_clock -name "clk" -period 281.5 {clk}
+
+### Area Efficient: 1428 MHz, 81.11 sq microns, 0.167 mW
+# create_clock -name "clk" -period 700 {clk}
+
+### Area Efficient: 1389 MHz, 81.09 sq microns, 0.163 mW
+# create_clock -name "clk" -period 720 {clk}
+
+set_dont_touch_network [find port clk]
+ set_clock_transition 32 clk 
+
+### Creating the Primary Inputs
+set prim_inputs [remove_from_collection [all_inputs] [find port clk]]
+
+### Setting Input Delays in ns
+set_input_delay -clock clk 0.100 $prim_inputs
+
+### Setting the Output Delays in ns
+set_output_delay -clock clk 0.100 [all_outputs]
+
+### Setting the Wireload Model Constraint
+ set_wire_load_mode "segmented"
+
+### Setting the RST_N signal to be very strongly driven, the value is in M Ohm ?
+ set_drive 000.1 rst_n 
+
+### Set Capacitive Load 100 fF on all Output Pins
+set_load 0.100 [all_outputs]
+
+### Compiling the Design
+compile -map_effort high
+compile -map_effort high -incremental_mapping
+
+compile -map_effort high -incremental_mapping
+compile -map_effort high -incremental_mapping
+
+### Setting up some clock skew and fixes for clock skew
+set_clock_uncertainty 10 clk
+set_fix_hold clk
+
+### Flatten the Heirarchy
+ ungroup -all -flatten
+
+### 2nd Compile
+compile -map_effort high
+compile -map_effort high -incremental_mapping
+
+ compile -map_effort high -incremental_mapping
+ compile -map_effort high -incremental_mapping
+
+ compile -map_effort high -incremental_mapping
+ compile -map_effort high -incremental_mapping
+
+ compile -map_effort high -incremental_mapping
+ compile -map_effort high -incremental_mapping
+
+ compile -map_effort high -incremental_mapping
+ compile -map_effort high -incremental_mapping
+
+ compile -map_effort high -incremental_mapping
+ compile -map_effort high -incremental_mapping
+ 
+ compile -map_effort high -incremental_mapping
+ compile -map_effort high -incremental_mapping
+
+ compile -map_effort high -incremental_mapping
+ compile -map_effort high -incremental_mapping
+
+ compile -map_effort high -incremental_mapping
+ compile -map_effort high -incremental_mapping
+
+ compile -map_effort high -incremental_mapping
+ compile -map_effort high -incremental_mapping
+
+##Writing the Area, Min & Max Timing Reports to files
+report_qor > ./Reports/CPU_8bit_QOR_ASAP.rpt
+report_power -analysis_effort high > ./Reports/CPU_8bit_power_ASAP.rpt
+report_area > ./Reports/CPU_8bit_area_ASAP.rpt
+report_timing -delay max > ./Reports/CPU_8bit_timing_ASAP.rpt
+report_timing -delay min >> ./Reports/CPU_8bit_timing_ASAP.rpt
+
+###Write out the netlist
+write -format verilog CPU_8bit_top -output ./Netlists/CPU_8bit_ASAP.vg
+
+###Write out the Synopsys Design Constraints format script (.sdc file)
+write_sdc ./SDC_Files/CPU_8bit_ASAP.sdc

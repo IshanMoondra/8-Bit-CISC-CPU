@@ -1,0 +1,107 @@
+ 
+****************************************
+Report : timing
+        -path full
+        -delay max
+        -max_paths 1
+Design : CPU_8bit_top
+Version: V-2023.12-SP5
+Date   : Mon Mar 24 16:58:44 2025
+****************************************
+
+Operating Conditions: PVT_0P7V_25C   Library: asap7sc7p5t_AO_RVT_TT_nldm_211120
+Wire Load Model Mode: segmented
+
+  Startpoint: iControl/REG/rdataout2_reg[0]
+              (rising edge-triggered flip-flop clocked by clk)
+  Endpoint: iControl/ALU/flag_reg[2]
+            (rising edge-triggered flip-flop clocked by clk)
+  Path Group: clk
+  Path Type: max
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock clk (rise edge)                                   0.00       0.00
+  clock network delay (ideal)                             0.00       0.00
+  iControl/REG/rdataout2_reg[0]/CLK (DFFHQNx2_ASAP7_75t_R)
+                                                          0.00       0.00 r
+  iControl/REG/rdataout2_reg[0]/QN (DFFHQNx2_ASAP7_75t_R)
+                                                         71.36      71.36 r
+  U1105/Y (INVx1_ASAP7_75t_R)                            17.63      88.98 f
+  U1111/Y (OR2x2_ASAP7_75t_R)                            26.76     115.74 f
+  U1194/Y (AOI22xp5_ASAP7_75t_R)                         15.23     130.97 r
+  U1680/Y (A2O1A1Ixp33_ASAP7_75t_R)                      22.72     153.69 f
+  U1209/Y (INVx1_ASAP7_75t_R)                            16.09     169.78 r
+  U1208/Y (OAI31xp67_ASAP7_75t_R)                        13.38     183.16 f
+  U1199/Y (INVx2_ASAP7_75t_R)                             9.93     193.10 r
+  U1775/Y (AND3x1_ASAP7_75t_R)                           23.00     216.10 r
+  U1337/Y (AOI211xp5_ASAP7_75t_R)                        11.05     227.15 f
+  U1058/Y (AND2x2_ASAP7_75t_R)                           22.09     249.23 f
+  U1210/Y (NAND2xp5_ASAP7_75t_R)                          9.82     259.05 r
+  iControl/ALU/flag_reg[2]/D (DFFASRHQNx1_ASAP7_75t_R)
+                                                          0.00     259.05 r
+  data arrival time                                                259.05
+
+  clock clk (rise edge)                                 281.50     281.50
+  clock network delay (ideal)                             0.00     281.50
+  clock uncertainty                                     -10.00     271.50
+  iControl/ALU/flag_reg[2]/CLK (DFFASRHQNx1_ASAP7_75t_R)
+                                                          0.00     271.50 r
+  library setup time                                    -12.44     259.06
+  data required time                                               259.06
+  --------------------------------------------------------------------------
+  data required time                                               259.06
+  data arrival time                                               -259.05
+  --------------------------------------------------------------------------
+  slack (MET)                                                        0.01
+
+
+1
+ 
+****************************************
+Report : timing
+        -path full
+        -delay min
+        -max_paths 1
+Design : CPU_8bit_top
+Version: V-2023.12-SP5
+Date   : Mon Mar 24 16:58:44 2025
+****************************************
+
+Operating Conditions: PVT_0P7V_25C   Library: asap7sc7p5t_AO_RVT_TT_nldm_211120
+Wire Load Model Mode: segmented
+
+  Startpoint: ram_dataout[6]
+              (input port clocked by clk)
+  Endpoint: iControl/REG/registers_reg[6][6]
+            (rising edge-triggered flip-flop clocked by clk)
+  Path Group: clk
+  Path Type: min
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock clk (rise edge)                                   0.00       0.00
+  clock network delay (ideal)                             0.00       0.00
+  input external delay                                    0.10       0.10 f
+  ram_dataout[6] (in)                                     0.00       0.10 f
+  U1045/Y (NAND2x1_ASAP7_75t_R)                          13.33      13.43 r
+  U1311/Y (NOR2xp33_ASAP7_75t_R)                         16.25      29.68 f
+  iControl/REG/registers_reg[6][6]/D (DFFASRHQNx1_ASAP7_75t_R)
+                                                          0.00      29.68 f
+  data arrival time                                                 29.68
+
+  clock clk (rise edge)                                   0.00       0.00
+  clock network delay (ideal)                             0.00       0.00
+  clock uncertainty                                      10.00      10.00
+  iControl/REG/registers_reg[6][6]/CLK (DFFASRHQNx1_ASAP7_75t_R)
+                                                          0.00      10.00 r
+  library hold time                                      18.06      28.06
+  data required time                                                28.06
+  --------------------------------------------------------------------------
+  data required time                                                28.06
+  data arrival time                                                -29.68
+  --------------------------------------------------------------------------
+  slack (MET)                                                        1.61
+
+
+1
